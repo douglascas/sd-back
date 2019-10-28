@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="ezequias.oliveira" id="1">
+        <createTable tableName="tariffs">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="automobile_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Weekday" type="decimal(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Weekend_day" type="decimal(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Weekday_loyalty" type="decimal(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Weekend_day_loyalty" type="decimal(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="actived" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="tariffs"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="ezequias.oliveira" id="2">
+        <addForeignKeyConstraint baseColumnNames="automobile_id" baseTableName="tariffs" constraintName="FK_m4cbc0rauevw78wgebfiw877" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="automobile"/>
+    </changeSet>
+</databaseChangeLog>

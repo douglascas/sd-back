@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="ezequias.oliveira" id="1">
+        <preConditions onFail="CONTINUE" >
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM category
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="category">
+            <column name="id">1</column>
+            <column name="name">Compact Hatch</column>
+        </insert>
+        <insert tableName="category">
+            <column name="id">2</column>
+            <column name="name">Medium Hatch</column>
+        </insert>
+        <insert tableName="category">
+            <column name="id">3</column>
+            <column name="name">Sedan</column>
+        </insert>
+        <insert tableName="category">
+            <column name="id">4</column>
+            <column name="name">Van</column>
+        </insert>
+        <insert tableName="category">
+            <column name="id">5</column>
+            <column name="name">Pickup</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
