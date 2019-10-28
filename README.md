@@ -14,7 +14,7 @@
 
 ```sh
  configurações:
-    - database: car-rentaldb
+    - database: car-rentaldb5
     - usename: h2sa
     - password: admin
 ```    

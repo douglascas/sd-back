@@ -16,12 +16,12 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
     @Transactional
-    public List<Category> listAll(){
+    public List<Category> listAll() {
         return this.categoryRepository.findAll();
     }
 
     @Transactional
-    public Optional<Category> findById(Integer id){
+    public Optional<Category> findById(Integer id) {
         return this.categoryRepository.findById(id);
     }
 

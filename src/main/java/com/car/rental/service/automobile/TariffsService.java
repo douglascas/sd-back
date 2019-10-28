@@ -49,25 +49,26 @@ public class TariffsService extends AbstractMessage {
         Automobile automobile = this.tariffsValidation.validateCreate(dto);
 
         Tariffs tariffs = mapper.map(dto, Tariffs.class);
-        if ( Objects.isNull(automobile) ) {
-            tariffs.setAutomobile( new Automobile() );
+        if (Objects.isNull(automobile)) {
+            tariffs.setAutomobile(new Automobile());
 
             this.checkAndSet(dto, tariffs);
 
-            tariffs.getAutomobile().setCategory( mapper.map(dto.getCategory(), Category.class) );
-            tariffs.getAutomobile().getModelYear().setYear( dto.getModelYear().getName() );
+            tariffs.getAutomobile().setCategory(mapper.map(dto.getCategory(), Category.class));
+            tariffs.getAutomobile().getModelYear().setYear(dto.getModelYear().getName());
 
-            this.modelYearRepository.save( tariffs.getAutomobile().getModelYear() );
-            this.automobileRepository.save( tariffs.getAutomobile() );
+            this.modelYearRepository.save(tariffs.getAutomobile().getModelYear());
+            this.automobileRepository.save(tariffs.getAutomobile());
         } else {
-            tariffs.setAutomobile( automobile );
+            tariffs.setAutomobile(automobile);
         }
 
-        return this.tariffsRepository.save( tariffs );
+        return this.tariffsRepository.save(tariffs);
     }
 
     /**
      * Validates the information and set.
+     * 
      * @param dto
      * @param tariffs
      * @throws IOException
@@ -76,8 +77,12 @@ public class TariffsService extends AbstractMessage {
         Manufacturer manufacturer = this.manufacturerValidation.validateRegistration(dto.getManufacturer());
         ModelYear modelYear = this.modelValidation.validateRegistration(dto.getManufacturer(), dto.getModel());
 
-        tariffs.getAutomobile().setManufacturer( Objects.isNull(manufacturer) ? mapper.map(dto.getManufacturer(), Manufacturer.class) : manufacturer );
-        tariffs.getAutomobile().setModelYear( Objects.isNull(modelYear) ? new ModelYear(dto.getModel().getId(), dto.getModel().getName(), dto.getModelYear().getName()) : modelYear );
+        tariffs.getAutomobile().setManufacturer(
+                Objects.isNull(manufacturer) ? mapper.map(dto.getManufacturer(), Manufacturer.class) : manufacturer);
+        tariffs.getAutomobile()
+                .setModelYear(Objects.isNull(modelYear)
+                        ? new ModelYear(dto.getModel().getId(), dto.getModel().getName(), dto.getModelYear().getName())
+                        : modelYear);
     }
 
     /**
@@ -88,8 +93,8 @@ public class TariffsService extends AbstractMessage {
      * @return array of {@link Tariffs}, or empty list
      */
     @Transient
-    public Page<Tariffs> list(Integer categoryId, Pageable pageable){
-        if ( Objects.isNull(categoryId) ) {
+    public Page<Tariffs> list(Integer categoryId, Pageable pageable) {
+        if (Objects.isNull(categoryId)) {
             return this.tariffsRepository.findByActivedTrue(pageable);
         }
         return this.tariffsRepository.findByActivedTrueAndAutomobileCategoryId(categoryId, pageable);
@@ -97,17 +102,18 @@ public class TariffsService extends AbstractMessage {
 
     /**
      * Search by id.
+     * 
      * @param id
      * @return {@link Tariffs}
      */
     @Transient
-    public Tariffs findById(Long id){
+    public Tariffs findById(Long id) {
         return this.tariffsRepository.findByActivedTrueAndId(id);
     }
 
-
     /**
      * Logically deletes tariffs.
+     * 
      * @param id
      * @throws IOException
      */
@@ -115,7 +121,7 @@ public class TariffsService extends AbstractMessage {
     public void delete(Long id) throws IOException {
         Optional<Tariffs> tariffs = this.tariffsRepository.findById(id);
 
-        if ( Objects.isNull(tariffs.get()) ) {
+        if (Objects.isNull(tariffs.get())) {
             throwsException("error.tariffs.not.exists");
         }
 

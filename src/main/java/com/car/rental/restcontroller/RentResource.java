@@ -22,21 +22,16 @@ import java.io.IOException;
 @RequestMapping(value = AppConstants.PATH)
 public class RentResource {
 
-    @Autowired
-    private CheaperRentService cheaperRentService;
+        @Autowired
+        private CheaperRentService cheaperRentService;
 
-
-    @ApiOperation(value = "Find the car with the cheapest rent", response = CheaperRentDTO.class,
-            notes = "This operation find the car with the cheapest rent.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "unexpected error")
-    })
-    @RequestMapping(value = "/cheaper-rent",
-            method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CheaperRentDTO> cheaperRent(@Validated CheaperRentFilterDTO filter) throws IOException {
-        return new ResponseEntity<>(this.cheaperRentService.cheaperRent(filter), HttpStatus.OK);
-    }
+        @ApiOperation(value = "Find the car with the cheapest rent", response = CheaperRentDTO.class, notes = "This operation find the car with the cheapest rent.")
+        @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved"),
+                        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
+                        @ApiResponse(code = 500, message = "unexpected error") })
+        @RequestMapping(value = "/cheaper-rent", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+        public ResponseEntity<CheaperRentDTO> cheaperRent(@Validated CheaperRentFilterDTO filter) throws IOException {
+                return new ResponseEntity<>(this.cheaperRentService.cheaperRent(filter), HttpStatus.OK);
+        }
 
 }

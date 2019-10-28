@@ -29,80 +29,61 @@ import java.util.stream.Collectors;
 @RequestMapping(value = AppConstants.PATH)
 public class TariffsResource extends AbstractMessage {
 
-    @Autowired
-    private TariffsService tariffsService;
+        @Autowired
+        private TariffsService tariffsService;
 
+        @ApiOperation(value = "Create a tariffs", response = TariffsDetailsDTO.class, notes = "This operation creates a new tariffs.")
+        @ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully Created"),
+                        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
+                        @ApiResponse(code = 500, message = "unexpected error") })
+        @Transactional
+        @RequestMapping(value = "/tariffs", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+        public ResponseEntity<TariffsDetailsDTO> create(@Validated @RequestBody TariffsDTO dto) throws IOException {
+                Tariffs tariffs = this.tariffsService.create(dto);
 
-    @ApiOperation(value = "Create a tariffs", response = TariffsDetailsDTO.class,
-            notes = "This operation creates a new tariffs.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully Created"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "unexpected error")
-    })
-    @Transactional
-    @RequestMapping(value = "/tariffs",
-            method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TariffsDetailsDTO> create(@Validated @RequestBody TariffsDTO dto) throws IOException {
-        Tariffs tariffs = this.tariffsService.create(dto);
-
-        return new ResponseEntity<>(mapper.map(tariffs, TariffsDetailsDTO.class), HttpStatus.CREATED);
-    }
-
-    @ApiOperation(value = "List the tariffs", response = TariffsDetailsDTO.class,
-            notes = "This operation lists all tariffs.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved list"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "unexpected error")
-    })
-    @RequestMapping(value = "/tariffs",
-            method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<TariffsDetailsDTO>> list(Integer categoryId, Pageable pageable) {
-        Page<Tariffs> tariffs = this.tariffsService.list(categoryId, pageable);
-
-        List<TariffsDetailsDTO> dtos = new ArrayList<>();
-        dtos.addAll(
-                tariffs.stream().map(tar -> {
-                    return mapper.map(tar, TariffsDetailsDTO.class);
-                }).collect(Collectors.toList())
-        );
-
-        return new ResponseEntity<>(dtos, HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "List the tariffs", response = TariffsDetailsDTO.class,
-            notes = "This operation lists all tariffs.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved list"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "unexpected error")
-    })
-    @RequestMapping(value = "/tariffs/{id}",
-            method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TariffsDetailsDTO> findById(@PathVariable Long id) {
-        Tariffs tariffs = this.tariffsService.findById(id);
-
-        if ( Objects.isNull(tariffs) ) {
-            return new ResponseEntity<>(HttpStatus.OK);
+                return new ResponseEntity<>(mapper.map(tariffs, TariffsDetailsDTO.class), HttpStatus.CREATED);
         }
 
-        return new ResponseEntity<>(mapper.map(tariffs, TariffsDetailsDTO.class), HttpStatus.OK);
-    }
+        @ApiOperation(value = "List the tariffs", response = TariffsDetailsDTO.class, notes = "This operation lists all tariffs.")
+        @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved list"),
+                        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
+                        @ApiResponse(code = 500, message = "unexpected error") })
+        @RequestMapping(value = "/tariffs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+        public ResponseEntity<List<TariffsDetailsDTO>> list(Integer categoryId, Pageable pageable) {
+                Page<Tariffs> tariffs = this.tariffsService.list(categoryId, pageable);
 
-    @ApiOperation(value = "List the tariffs", response = TariffsDetailsDTO.class,
-            notes = "This operation lists all tariffs.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 204, message = "Successfully deleted, record no longer exists"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "unexpected error")
-    })
-    @Transactional
-    @RequestMapping(value = "/tariffs/{id}",
-            method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) throws IOException {
-        this.tariffsService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+                List<TariffsDetailsDTO> dtos = new ArrayList<>();
+                dtos.addAll(tariffs.stream().map(tar -> {
+                        return mapper.map(tar, TariffsDetailsDTO.class);
+                }).collect(Collectors.toList()));
+
+                return new ResponseEntity<>(dtos, HttpStatus.OK);
+        }
+
+        @ApiOperation(value = "List the tariffs", response = TariffsDetailsDTO.class, notes = "This operation lists all tariffs.")
+        @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved list"),
+                        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
+                        @ApiResponse(code = 500, message = "unexpected error") })
+        @RequestMapping(value = "/tariffs/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+        public ResponseEntity<TariffsDetailsDTO> findById(@PathVariable Long id) {
+                Tariffs tariffs = this.tariffsService.findById(id);
+
+                if (Objects.isNull(tariffs)) {
+                        return new ResponseEntity<>(HttpStatus.OK);
+                }
+
+                return new ResponseEntity<>(mapper.map(tariffs, TariffsDetailsDTO.class), HttpStatus.OK);
+        }
+
+        @ApiOperation(value = "List the tariffs", response = TariffsDetailsDTO.class, notes = "This operation lists all tariffs.")
+        @ApiResponses(value = { @ApiResponse(code = 204, message = "Successfully deleted, record no longer exists"),
+                        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
+                        @ApiResponse(code = 500, message = "unexpected error") })
+        @Transactional
+        @RequestMapping(value = "/tariffs/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+        public ResponseEntity<HttpStatus> delete(@PathVariable Long id) throws IOException {
+                this.tariffsService.delete(id);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
 
 }

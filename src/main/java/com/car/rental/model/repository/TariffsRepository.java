@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-
 public interface TariffsRepository extends JpaRepository<Tariffs, Long>, JpaSpecificationExecutor<Tariffs> {
 
     Tariffs findByAutomobileIdAndActivedTrue(Long automobileId);
